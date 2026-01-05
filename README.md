@@ -1,5 +1,7 @@
 # qqq-app-starter
 
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 Example QQQ application for learning and experimentation.
 
 **For:** Developers learning QQQ who want a working example to explore  
@@ -135,4 +137,4 @@ Stable example project. For production apps, use [new-qqq-application-template](
 
 ## License
 
-AGPL-3.0 - Kingsrook, LLC
+Apache-2.0 - See [LICENSE](LICENSE) for details.
