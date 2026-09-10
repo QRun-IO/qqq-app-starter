@@ -36,16 +36,16 @@
       <!-- Common props for all qqq modules -->
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-      <maven.compiler.source>17</maven.compiler.source>
-      <maven.compiler.target>17</maven.compiler.target>
+      <maven.compiler.source>21</maven.compiler.source>
+      <maven.compiler.target>21</maven.compiler.target>
       <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
       <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
       <checkstyle.failOnViolation>true</checkstyle.failOnViolation>
       <coverage.haltOnFailure>true</coverage.haltOnFailure>
       <coverage.instructionCoveredRatioMinimum>0.80</coverage.instructionCoveredRatioMinimum>
 
-      <qqq.versions.bom>0.24.0-20250106-145452</qqq.versions.bom>
-      <qqq.versions.frontendMaterialDashboard>0.24.0-20241122.223138-1</qqq.versions.frontendMaterialDashboard>
+      <qqq.versions.bom>4.0.0</qqq.versions.bom>
+      <qqq.versions.frontendMaterialDashboard>0.40.0</qqq.versions.frontendMaterialDashboard>
    </properties>
 
    <dependencyManagement>
@@ -222,6 +222,15 @@
             <version>3.0.0-M5</version>
             <configuration>
                <argLine>@{jaCoCoArgLine}</argLine>
+               <failIfNoTests>true</failIfNoTests>
+               <environmentVariables>
+                  <RDBMS_VENDOR>mysql</RDBMS_VENDOR>
+                  <RDBMS_HOSTNAME>127.0.0.1</RDBMS_HOSTNAME>
+                  <RDBMS_PORT>3306</RDBMS_PORT>
+                  <RDBMS_DATABASE_NAME>qqq_starter_test</RDBMS_DATABASE_NAME>
+                  <RDBMS_USERNAME>test</RDBMS_USERNAME>
+                  <RDBMS_PASSWORD>test</RDBMS_PASSWORD>
+               </environmentVariables>
             </configuration>
          </plugin>
          <plugin>
@@ -272,12 +281,7 @@
          <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.8</version>
-            <configuration>
-               <includes>
-                  <include>com/nutrifresh/**/*</include>
-               </includes>
-            </configuration>
+            <version>0.8.14</version>
             <executions>
                <execution>
                   <id>pre-unit-test</id>
@@ -324,53 +328,9 @@
             <artifactId>exec-maven-plugin</artifactId>
             <groupId>org.codehaus.mojo</groupId>
             <version>3.0.0</version>
-            <executions>
-               <execution>
-                  <id>test-coverage-summary</id>
-                  <phase>verify</phase>
-                  <goals>
-                     <goal>exec</goal>
-                  </goals>
-                  <configuration>
-                     <executable>sh</executable>
-                     <arguments>
-                        <argument>-c</argument>
-                        <argument>
-                           <![CDATA[
-echo "Element\nInstructions Missed\nInstruction Coverage\nBranches Missed\nBranch Coverage\nComplexity Missed\nComplexity Hit\nLines Missed\nLines Hit\nMethods Missed\nMethods Hit\nClasses Missed\nClasses Hit\n" > /tmp/$$.headers
-xpath -n -q -e '/html/body/table/tfoot/tr[1]/td/text()' target/site/jacoco/index.html > /tmp/$$.values
-echo
-echo "Jacoco coverage summary report:"
-echo "   See also target/site/jacoco/index.html"
-echo "   and https://www.jacoco.org/jacoco/trunk/doc/counters.html"
-echo "------------------------------------------------------------"
-paste /tmp/$$.headers /tmp/$$.values | tail +2 | awk -v FS='\t' '{printf("%-20s %s\n",$1,$2)}'
-rm /tmp/$$.headers /tmp/$$.values
-                           ]]>
-                        </argument>
-                     </arguments>
-                  </configuration>
-               </execution>
-            </executions>
          </plugin>
 
       </plugins>
    </build>
-
-   <repositories>
-      <repository>
-         <id>github-qqq-maven-registry</id>
-         <name>GitHub QQQ Maven Registry</name>
-         <url>https://maven.pkg.github.com/Kingsrook/qqq-maven-registry</url>
-      </repository>
-   </repositories>
-
-   <distributionManagement>
-      <repository>
-         <id>github-qqq-maven-registry</id>
-         <name>GitHub QQQ Maven Registry</name>
-         <url>https://maven.pkg.github.com/Kingsrook/qqq-maven-registry</url>
-      </repository>
-   </distributionManagement>
 
 </project>
