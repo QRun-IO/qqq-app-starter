@@ -45,7 +45,7 @@
       <coverage.instructionCoveredRatioMinimum>0.80</coverage.instructionCoveredRatioMinimum>
 
       <qqq.versions.bom>4.0.0</qqq.versions.bom>
-      <qqq.versions.frontendMaterialDashboard>0.40.0</qqq.versions.frontendMaterialDashboard>
+      <qqq.versions.frontendMaterialDashboard>0.41.0</qqq.versions.frontendMaterialDashboard>
    </properties>
 
    <dependencyManagement>

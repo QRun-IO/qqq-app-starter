@@ -3,6 +3,10 @@
 Minimal example/learning QQQ application (one RDBMS table + Material Dashboard).
 For production scaffolding use `new-qqq-application-template` instead (per README).
 
+## QQQ 4.0 baseline — 2026-09-24
+
+This learning starter targets Java 21, QQQ 4.0.0 and Material Dashboard 0.41.0. Its release dependencies resolve from Maven Central; use README.md for the database, environment and build commands. The historical review below predates this migration. The separate production scaffold is outside this release train's certification.
+
 ## Knowledge base
 
 Deep-review dossiers live in the second-brain vault:
