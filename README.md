@@ -1,6 +1,6 @@
 # qqq-app-starter
 
-A small QQQ 4.0 application for learning: one MySQL table, application navigation, and the Material Dashboard 0.40.0. Requires **Java 21**, **Maven 3.8+**, and MySQL. Dependencies come from Maven Central.
+A small QQQ 4.0 application for learning: one MySQL table, application navigation, and the Material Dashboard 0.40.0. Requires **Java 21**, **Maven 3.8+**, and MySQL. The POM targets QQQ 4.0.0, whose final artifacts are not published yet. For candidate validation, build the selected QQQ candidate and supply `-Dqqq.versions.bom=<candidate-version>` to Maven; do not install an RC under the final version. The unmodified build command below becomes directly usable after final publication.
 
 ## Database and configuration
 

@@ -26,9 +26,11 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 import com.kingsrook.qqq.backend.core.context.QContext;
 import io.javalin.Javalin;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -49,21 +51,29 @@ class StarterAppTest
       AtomicReference<Javalin> service = new AtomicReference<>();
       server.setPort(0);
       server.withJavalinConfigurationCustomizer(service::set);
+      server.withJavalinConfigCustomizer(config -> config.routes.get("/starter-configuration-check",
+         context -> context.status(202).result("configured")));
 
       try
       {
          server.start();
          URI baseUri = URI.create("http://localhost:" + service.get().port());
-         try(HttpClient client = HttpClient.newHttpClient())
+         try(HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build())
          {
-            HttpResponse<String> dashboard = client.send(HttpRequest.newBuilder(baseUri.resolve("/")).build(), HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> dashboard = client.send(HttpRequest.newBuilder(baseUri.resolve("/")).timeout(Duration.ofSeconds(5)).build(), HttpResponse.BodyHandlers.ofString());
             assertEquals(200, dashboard.statusCode());
             assertTrue(dashboard.body().contains("<html"));
 
-            HttpResponse<String> metadata = client.send(HttpRequest.newBuilder(baseUri.resolve("/metaData")).build(), HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> metadata = client.send(HttpRequest.newBuilder(baseUri.resolve("/metaData")).timeout(Duration.ofSeconds(5)).build(), HttpResponse.BodyHandlers.ofString());
             assertEquals(200, metadata.statusCode());
-            assertTrue(metadata.body().contains("sampleTable"));
-            assertTrue(metadata.body().contains("sampleApp"));
+            JSONObject metadataBody = new JSONObject(metadata.body());
+            assertTrue(metadataBody.getJSONObject("tables").has("sampleTable"));
+            assertTrue(metadataBody.getJSONObject("apps").has("sampleApp"));
+
+            HttpResponse<String> configured = client.send(HttpRequest.newBuilder(baseUri.resolve("/starter-configuration-check"))
+               .timeout(Duration.ofSeconds(5)).build(), HttpResponse.BodyHandlers.ofString());
+            assertEquals(202, configured.statusCode());
+            assertEquals("configured", configured.body());
          }
       }
       finally
