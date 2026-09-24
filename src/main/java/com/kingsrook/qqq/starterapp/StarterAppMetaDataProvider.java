@@ -29,6 +29,7 @@ import com.kingsrook.qqq.backend.core.logging.QLogger;
 import com.kingsrook.qqq.backend.core.model.metadata.QAuthenticationType;
 import com.kingsrook.qqq.backend.core.model.metadata.QBackendMetaData;
 import com.kingsrook.qqq.backend.core.model.metadata.QInstance;
+import com.kingsrook.qqq.backend.core.model.metadata.authentication.AuthScope;
 import com.kingsrook.qqq.backend.core.model.metadata.authentication.QAuthenticationMetaData;
 import com.kingsrook.qqq.backend.core.model.metadata.branding.QBrandingMetaData;
 import com.kingsrook.qqq.backend.core.model.metadata.fields.QFieldMetaData;
@@ -64,7 +65,7 @@ public class StarterAppMetaDataProvider extends AbstractQQQApplication
       QInstance qInstance = new QInstance();
 
       qInstance.setBranding(defineBranding());
-      qInstance.setAuthentication(defineAuthentication());
+      qInstance.registerAuthenticationProvider(AuthScope.instanceDefault(), defineAuthentication());
       qInstance.addBackend(defineRDBMSBackend());
       qInstance.addTable(defineSampleTable());
       qInstance.addApp(defineSampleApp(qInstance));

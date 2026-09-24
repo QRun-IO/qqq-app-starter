@@ -23,26 +23,23 @@ package com.kingsrook.qqq.starterapp;
 
 
 import com.kingsrook.qqq.backend.core.exceptions.QException;
-import com.kingsrook.qqq.backend.core.logging.QLogger;
 import com.kingsrook.qqq.backend.core.model.session.QSystemUserSession;
 import com.kingsrook.qqq.backend.core.scheduler.QScheduleManager;
 import com.kingsrook.qqq.middleware.javalin.QApplicationJavalinServer;
 
 
 /*******************************************************************************
- ** Start a javalin (http) qqq server.
- **
- ** Supported system properties:
- **
- ** -Dqqq.scheduleManager.enabled=false - do not start the ScheduleManager
- **   (used inside that class).
- **
- ** -Dqqq.javalin.hotSwapInstance=true - to cause the QInstance to be hot-swapped.
- **   Useful during development, to avoid needing as many server restarts.
+ ** Starts the starter application's HTTP server and scheduled jobs.
  *******************************************************************************/
-public class StarterAppJavalinServer
+public class StarterAppJavalinServer extends QApplicationJavalinServer
 {
-   private static final QLogger LOG = QLogger.getLogger(StarterAppJavalinServer.class);
+   /*******************************************************************************
+    **
+    *******************************************************************************/
+   public StarterAppJavalinServer()
+   {
+      super(new StarterAppMetaDataProvider());
+   }
 
 
 
@@ -51,29 +48,8 @@ public class StarterAppJavalinServer
     *******************************************************************************/
    public static void main(String[] args) throws QException
    {
-      try
-      {
-         /////////////////////////////
-         // define your application //
-         /////////////////////////////
-         StarterAppMetaDataProvider application = new StarterAppMetaDataProvider();
-
-         /////////////////////////////////////
-         // start the javalin (http) server //
-         /////////////////////////////////////
-         QApplicationJavalinServer javalinServer = new QApplicationJavalinServer(application);
-         javalinServer.start();
-
-         //////////////////////////////////////////////////////////////////////////
-         // if you want to use scheduled jobs, start the schedule manager module //
-         //////////////////////////////////////////////////////////////////////////
-         QScheduleManager scheduleManager = QScheduleManager.initInstance(application.defineQInstance(), () -> new QSystemUserSession());
-         scheduleManager.start();
-      }
-      catch(Exception e)
-      {
-         LOG.error("Error starting application server.", e);
-      }
+      new StarterAppJavalinServer().start();
+      QScheduleManager scheduleManager = QScheduleManager.initInstance(new StarterAppMetaDataProvider().defineQInstance(), () -> new QSystemUserSession());
+      scheduleManager.start();
    }
-
 }
