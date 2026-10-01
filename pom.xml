@@ -130,7 +130,51 @@
    </dependencies>
 
    <build>
+      <resources>
+         <resource>
+            <directory>src/main/resources</directory>
+         </resource>
+         <resource>
+            <directory>${project.build.directory}/maven-shared-archive-resources</directory>
+         </resource>
+      </resources>
+      <testResources>
+         <testResource>
+            <directory>src/test/resources</directory>
+         </testResource>
+         <testResource>
+            <directory>${project.build.directory}/maven-shared-archive-resources</directory>
+         </testResource>
+      </testResources>
       <plugins>
+         <!-- Namespace our exact copies so shading preserves dependency notices. -->
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.4.0</version>
+            <executions>
+               <execution>
+                  <id>package-root-notices</id>
+                  <phase>generate-resources</phase>
+                  <goals>
+                     <goal>copy-resources</goal>
+                  </goals>
+                  <configuration>
+                     <outputDirectory>${project.build.directory}/maven-shared-archive-resources/META-INF/qqq-app-starter</outputDirectory>
+                     <resources>
+                        <resource>
+                           <directory>${project.basedir}</directory>
+                           <filtering>false</filtering>
+                           <includes>
+                              <include>LICENSE</include>
+                              <include>NOTICE</include>
+                           </includes>
+                        </resource>
+                     </resources>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
          <!-- Assembly plugin, for building a CLI-->
          <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
