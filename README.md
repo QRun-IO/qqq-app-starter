@@ -53,4 +53,4 @@ For migration changes, see the [QQQ 4.0 migration guide](https://github.com/QRun
 
 ## License
 
-See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).

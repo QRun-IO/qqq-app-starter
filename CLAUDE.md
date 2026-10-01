@@ -24,7 +24,6 @@ Key facts from that review:
   `QInstance.setAuthentication(...)` (removed; use
   `withInstanceDefaultAuthentication` / `registerAuthenticationProvider`), and
   the pom pins Java 17 vs 4.0's Java 21 floor.
-- Licensing is split: LICENSE/NOTICE say Apache-2.0, but source headers, the
-  pom header, and the checkstyle-enforced header template
-  (`checkstyle/license.txt`) are still AGPL-3.0/Kingsrook; pom has no
-  `<licenses>` block.
+- The historical license split is resolved in the current source: LICENSE/NOTICE,
+  source headers, the pom header and `<licenses>` metadata, and
+  `checkstyle/license.txt` consistently declare Apache-2.0.
