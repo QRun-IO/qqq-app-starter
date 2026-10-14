@@ -53,4 +53,21 @@ For migration changes, see the [QQQ 4.0 migration guide](https://github.com/QRun
 
 ## License
 
-See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+The packaged application includes byte-for-byte copies of this repository's
+`LICENSE` and `NOTICE` under `META-INF/qqq-app-starter/`. This namespace avoids
+overwriting dependency license/notice entries during shading. Main/test resources
+and Maven shared resources for source/Javadoc archives include the same copies.
+
+After packaging, use Python 3 to check every produced archive explicitly:
+
+```bash
+mvn -DskipTests clean package
+python3 scripts/check-packaged-notices.py --root . --prefix META-INF/qqq-app-starter target/*.jar
+```
+
+This is a packaging-only check; existing runtime tests, reviews and release
+requirements still apply. The guard rejects absent archives, missing/duplicate
+entries and altered notice bytes. It checks the supplied archives; it does not
+generate additional classifiers or run automatically in the publishing workflow.
+
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
