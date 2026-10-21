@@ -1,25 +1,14 @@
 version: 2.1
-
+setup: true
 orbs:
-  qqq-orb: kingsrook/qqq-orb@0.6.8
-
-commands:
-  configure-package-install:
-    steps:
-      - run:
-          name: Keep package installation unattended
-          command: |
-            # These build machines are discarded after the job.
-            sudo install -d /etc/needrestart/conf.d
-            printf '%s\n' '$nrconf{restart} = "l";' | sudo tee /etc/needrestart/conf.d/99-qqq-ci.conf >/dev/null
-
+  qqq-orb: kingsrook/qqq-orb@0.7.4
 workflows:
-  test_only:
+  setup:
     jobs:
-      - qqq-orb/mvn_test_only:
-          pre-steps:
-            - configure-package-install
-          context: [qqq-maven-registry-credentials]
-          filters:
-            tags:
-              ignore: /.*/
+    - qqq-orb/generate_pipeline:
+        orb_version: 0.7.4
+        filters:
+          branches:
+            ignore: automation/qbit-rc-pending
+          tags:
+            only: /.*/
